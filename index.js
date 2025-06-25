@@ -27,8 +27,14 @@ app.use(bodyParser.json())                  //permite ler dados via json
 //Rotas
 //rota padrao, home 
 app.get("/", (req, res) => {
-    res.render("index")
+    //igual ao SELECT * FROM
+    Pergunta.findAll({ raw: true }).then(perguntas => {   //'raw: true', trás apenas as inf cruas
+        res.render("index", {
+            perguntas: perguntas
+        })
+    })
 })
+
 //rota perguntar
 app.get("/perguntar", (req, res) => {
     res.render("perguntar")

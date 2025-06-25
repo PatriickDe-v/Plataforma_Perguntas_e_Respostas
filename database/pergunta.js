@@ -14,3 +14,5 @@ const Pergunta = connection.define('perguntas', {
 
 //Sincronizar com os bancos de dados ^ 
 Pergunta.sync({force: false}).then(() => {}) //não vai recriar a tabela no banco de dados caso ja exista
+
+module.exports = Pergunta;

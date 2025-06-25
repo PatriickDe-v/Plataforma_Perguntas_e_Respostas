@@ -2,7 +2,7 @@ const express = require("express") //importando o modulo express
 const app = express()              //criando uma copia do express
 const bodyParser = require("body-parser")
 const connection = require("./database/database")
-const pergunta = require("./database/pergunta")
+const Pergunta = require("./database/pergunta")
 
 //DataBase
 connection
@@ -37,6 +37,15 @@ app.get("/perguntar", (req, res) => {
 //rota para receber os dados do formulario
 app.post("/salvarpergunta", (req, res) => {
 
+    let titulo = req.body.titulo;
+    let descricao = req.body.descricao;
+
+    Pergunta.create({                   //equivalente ao INSERT INTO
+        titulo: titulo,
+        descricao: descricao
+    }).then(() => {
+        res.redirect("/")
+    })
 })
 
 

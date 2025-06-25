@@ -28,7 +28,11 @@ app.use(bodyParser.json())                  //permite ler dados via json
 //rota padrao, home 
 app.get("/", (req, res) => {
     //igual ao SELECT * FROM
-    Pergunta.findAll({ raw: true }).then(perguntas => {   //'raw: true', trás apenas as inf cruas
+    Pergunta.findAll({
+        raw: true, order: [
+            ['id', 'DESC']  //Ordenar as perguntas da forma DECRESCENTE. 
+        ]
+    }).then(perguntas => {   //'raw: true', trás apenas as inf cruas
         res.render("index", {
             perguntas: perguntas
         })

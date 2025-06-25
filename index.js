@@ -30,10 +30,10 @@ app.use(bodyParser.json())                  //permite ler dados via json
 app.get("/", (req, res) => {
     //igual ao SELECT * FROM
     Pergunta.findAll({
-        raw: true, order: [
+        raw: true, order: [ //'raw: true', trás apenas as inf cruas
             ['id', 'DESC']  //Ordenar as perguntas da forma DECRESCENTE. 
         ]
-    }).then(perguntas => {   //'raw: true', trás apenas as inf cruas
+    }).then(perguntas => {
         res.render("index", {
             perguntas: perguntas
         })
@@ -67,9 +67,20 @@ app.get("/pergunta/:id", (req, res) => {
         where: { id: id }
 
     }).then(pergunta => {
-        if (pergunta != undefined) {      //pergunta foi encontrada
-            res.render("pergunta", {
-                pergunta: pergunta
+        if (pergunta != undefined) {
+
+            //pesquisando respostas que tenham o id igual ao id da pergunta
+            Resposta.findAll({
+                where: { perguntaId: pergunta.id },
+                order: [
+                    ['id', 'DESC']
+                ]
+            }).then(respostas => {
+                //pergunta foi encontrada
+                res.render("pergunta", {
+                    pergunta: pergunta,
+                    respostas: respostas
+                })
             })
         } else {                            //pergunta vai ser nula (não encontrada)
             res.redirect("/")
@@ -78,6 +89,20 @@ app.get("/pergunta/:id", (req, res) => {
 
 })
 
+//vai receber os dados do formulário resposta
+app.post("/responder", (req, res) => {
+    //pegando os dados dos campos do formulário
+    let corpo = req.body.corpo
+    let perguntaId = req.body.pergunta
+
+    Resposta.create({
+        corpo: corpo,
+        perguntaId: perguntaId
+    }).then(() => {
+        res.redirect("/pergunta/" + perguntaId)
+    })
+
+})
 
 app.listen(8080, () => {
     console.log("App rodando")

@@ -2,6 +2,7 @@ const express = require("express") //importando o modulo express
 const app = express()              //criando uma copia do express
 const bodyParser = require("body-parser")
 const connection = require("./database/database")
+const pergunta = require("./database/pergunta")
 
 //DataBase
 connection

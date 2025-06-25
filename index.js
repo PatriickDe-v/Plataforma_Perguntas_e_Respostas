@@ -58,6 +58,23 @@ app.post("/salvarpergunta", (req, res) => {
     })
 })
 
+//buscando perguntas pelo id
+app.get("/pergunta/:id", (req, res) => {
+    let id = req.params.id
+
+    Pergunta.findOne({
+        where: { id: id }
+
+    }).then(pergunta => {
+        if (pergunta != undefined) {      //pergunta foi encontrada
+            res.render("pergunta")
+        } else {                            //pergunta vai ser nula (não encontrada)
+            res.redirect("/")
+        }
+    })
+
+})
+
 
 app.listen(8080, () => {
     console.log("App rodando")

@@ -1,6 +1,17 @@
 const express = require("express") //importando o modulo express 
 const app = express()              //criando uma copia do express
 const bodyParser = require("body-parser")
+const connection = require("./database/database")
+
+//DataBase
+connection
+    .authenticate()                 //tentando conectar com o banco de dados
+    .then(() => {
+        console.log("Conexão feita com o banco de dados!")      //se conseguir, envia esse console.log
+    })
+    .catch((msgErro) => {
+        console.log(msgErro)                    //caso der erro, envia esse console.log
+    })
 
 
 //Estou dizendo para o Express usar o EJS como view engine
